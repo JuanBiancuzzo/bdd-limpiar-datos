@@ -1,4 +1,5 @@
-use chrono::NaiveDateTime;
+mod review;
+
 use csv::Writer;
 use serde::Serialize;
 use serde_json::Value;
@@ -6,16 +7,6 @@ use std::env;
 use std::fs::{self, File};
 use std::io::{BufRead, BufReader, BufWriter};
 
-#[derive(Debug)]
-struct Review {
-    id: String,
-    user_name: String,
-    content: String,
-    score: i32,
-    thumbs_up: i32,
-    app_version: String,
-    date: String,
-}
 
 fn obtener_archivo_con_parametros(
     path_datos: Option<&String>,
@@ -57,53 +48,7 @@ fn obtener_archivo_con_parametros(
 
     Some((archivo_datos, parametros))
 }
-use regex::Regex;
 
-fn is_valid_id(id: &str) -> bool {
-    let re = Regex::new(
-        r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
-    )
-    .unwrap();
-    re.is_match(id)
-}
-
-fn is_valid_user_name(user_name: &str) -> bool {
-    return user_name != "";
-}
-
-fn is_valid_comment(comment: &str) -> bool {
-    return comment != "";
-}
-
-//Agregar validaciones extra? Por ejemplo si esperamos tener reviews de cierto año en adelante y demás
-fn is_valid_date(date: &str) -> bool {
-    return NaiveDateTime::parse_from_str(date, "%Y-%m-%d %H:%M:%S").is_ok();
-}
-
-//Cuando se lee, si no hay nada, por default se pone -1, así que habría que descartar estas líneas
-fn is_valid_score(score: i32) -> bool {
-    return score != -1;
-}
-
-//Cuando se lee, si no hay nada, por default se pone -1, así que habría que descartar estas líneas
-fn is_valid_thumbs_up(thumbs_up: i32) -> bool {
-    return thumbs_up != -1;
-}
-
-fn is_valid_app_version(app_version: &str) -> bool {
-    let re = Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").unwrap();
-    re.is_match(app_version)
-}
-
-fn is_valid_record(review: &Review) -> bool {
-    return is_valid_date(&review.date)
-        && is_valid_score(review.score)
-        && is_valid_thumbs_up(review.thumbs_up)
-        && is_valid_id(&review.id)
-        && is_valid_user_name(&review.user_name)
-        && is_valid_comment(&review.content)
-        && is_valid_app_version(&review.app_version);
-}
 
 fn main() {
     let arguments: Vec<String> = env::args().collect();
@@ -120,7 +65,7 @@ fn main() {
             }
         };
 
-    println!("Tenemos los parametros: \n{:?}", parametros);
+    println!("Tenemos los parametros: \n{:?}\n", parametros);
 
     //Crear el archivo. Si existe, simplemente re-escribirlo supongo.
 
@@ -141,28 +86,14 @@ fn main() {
             }
         };
 
-        // Ignorar la última columna del CSV
-        let mut fields: Vec<&str> = line.split(',').collect();
-        fields.pop();
-
-        // Convertir a Review
-        let review = Review {
-            id: fields[0].to_string(),
-            user_name: fields[1].to_string(),
-            content: fields[2].to_string(),
-            score: fields[3].parse().unwrap_or(-1),
-            thumbs_up: fields[4].parse().unwrap_or(-1),
-            app_version: fields[5].to_string(),
-            date: fields[6].to_string(),
-        };
-
-        println!("{:?}", review);
-        if is_valid_record(&review) {
-            println!("Valid review!\n");
-            //Escribir en el archivo
-        }
-        else {
-            println!("Invalid review!\n");
+        match review::Review::new(&line) {
+            Ok(review) => {
+                println!("{}", review);
+                println!("Valid review!\n");
+            },
+            Err(error) => {
+                println!("Invalid review! \n\tPor {:?}\n", error);
+            }
         }
     }
 }
