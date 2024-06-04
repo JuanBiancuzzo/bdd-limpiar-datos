@@ -26,8 +26,8 @@ pub struct Review {
 }
 
 impl Review {
-    pub fn new(linea: &str) -> Result<Self, ErrorReview> {
-        let fields: Vec<&str> = linea.split(',').collect();
+    pub fn new(linea: &str, sep: &str) -> Result<Self, ErrorReview> {
+        let fields: Vec<&str> = linea.split(sep).collect();
         if fields.len() <= 6 {
             return Err(ErrorReview::CantidadDeCamposInvalida);
         }

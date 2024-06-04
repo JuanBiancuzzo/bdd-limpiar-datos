@@ -1,11 +1,9 @@
 mod review;
 
-use csv::Writer;
-use serde::Serialize;
 use serde_json::Value;
 use std::env;
 use std::fs::{self, File};
-use std::io::{BufRead, BufReader, BufWriter};
+use std::io::{BufRead, BufReader};
 
 
 fn obtener_archivo_con_parametros(
@@ -66,15 +64,24 @@ fn main() {
         };
 
     println!("Tenemos los parametros: \n{:?}\n", parametros);
+    let header: usize = match &parametros["header"] {
+        Value::Number(header) if header.is_u64() => header.as_u64().unwrap().try_into().unwrap(),
+        _ => panic!(),
+    };
+
+    let sep = match &parametros["separador"] {
+        Value::String(sep) => sep,
+        _ => panic!(),
+    };
 
     //Crear el archivo. Si existe, simplemente re-escribirlo supongo.
 
     for (i, line) in archivo_datos.lines().enumerate() {
-        if i == 0 {
+        if i < header {
             //Escribir el encabezado en el archivo
             continue;
         }
-        if i >= 5 {
+        if i >= 5 + header {
             break;
         }
 
@@ -86,7 +93,7 @@ fn main() {
             }
         };
 
-        match review::Review::new(&line) {
+        match review::Review::new(&line, &sep) {
             Ok(review) => {
                 println!("{}", review);
                 println!("Valid review!\n");
