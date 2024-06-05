@@ -4,11 +4,30 @@ use serde_json::Value;
 use std::env;
 use std::fs::{self, File};
 use std::io::{BufRead, BufReader};
+use std::process::exit;
 
+const OUTPUT_FILE : &str = "datos/clean_reviews.csv";
 
-fn obtener_archivo_con_parametros(
-    path_datos: Option<&String>,
-    path_parametros: Option<&String>,
+fn file_exists(path: &str) -> bool {
+    fs::metadata(path).is_ok()
+}
+
+fn create_output_file() -> File {
+    if file_exists(OUTPUT_FILE) {
+        match fs::remove_file(OUTPUT_FILE) {
+            Ok(_) => (),
+            Err(_) => {
+                eprintln!("Error: Couldn't remove the file.");
+                exit(1);
+            }
+        }
+    }
+    fs::File::create(OUTPUT_FILE).expect("Error: Couldn't create the file.")
+}
+
+fn obtain_file_with_parameters(
+    path_datos: Option<String>,
+    path_parametros: Option<String>,
 ) -> Option<(File, Value)> {
     let (path_datos, path_parametros) = match (path_datos, path_parametros) {
         (None, _) => {
@@ -47,36 +66,37 @@ fn obtener_archivo_con_parametros(
     Some((archivo_datos, parametros))
 }
 
-
-fn main() {
+fn validate_arguments() {
     let arguments: Vec<String> = env::args().collect();
+    if arguments.len() != 3 {
+        eprintln!("Error: Se necesitan ambas rutas a los archivos de datos y parámetros.");
+        exit(1);
+    }
+}
 
-    let path_datos = arguments.get(1);
-    let path_parametros = arguments.get(2);
+fn get_path_from_arguments() -> (Option<String>, Option<String>) {
+    let arguments: Vec<String> = env::args().collect();
+    let path_datos = Some(arguments[1].clone());
+    let path_parametros = Some(arguments[2].clone());
+    (path_datos, path_parametros)
+}
 
-    let (archivo_datos, parametros) =
-        match obtener_archivo_con_parametros(path_datos, path_parametros) {
-            Some((archivo_datos, parametros)) => (BufReader::new(archivo_datos), parametros),
-            _ => {
-                eprintln!("Error: Se necesitan ambas rutas a los archivos de datos y parámetros.");
-                return;
-            }
-        };
-
-    println!("Tenemos los parametros: \n{:?}\n", parametros);
-    let header: usize = match &parametros["header"] {
+fn get_header_and_separator(parameters : Value) -> (usize, String){
+    let header: usize = match &parameters["header"] {
         Value::Number(header) if header.is_u64() => header.as_u64().unwrap().try_into().unwrap(),
-        _ => panic!(),
+        _ => exit(1),
     };
 
-    let sep = match &parametros["separador"] {
-        Value::String(sep) => sep,
-        _ => panic!(),
+    let sep = match &parameters["separador"] {
+        Value::String(sep) => sep.to_string(),
+        _ => exit(1),
     };
 
-    //Crear el archivo. Si existe, simplemente re-escribirlo supongo.
+    return (header, sep)
+}
 
-    for (i, line) in archivo_datos.lines().enumerate() {
+fn process_file(data_file : BufReader<File>, clean_reviews : File, header : usize, sep : String) {
+    for (i, line) in data_file.lines().enumerate() {
         if i < header {
             //Escribir el encabezado en el archivo
             continue;
@@ -84,7 +104,7 @@ fn main() {
         if i >= 5 + header {
             break;
         }
-
+    
         let line = match line {
             Ok(line) => line,
             Err(_) => {
@@ -92,7 +112,7 @@ fn main() {
                 return;
             }
         };
-
+    
         match review::Review::new(&line, &sep) {
             Ok(review) => {
                 println!("{}", review);
@@ -103,4 +123,26 @@ fn main() {
             }
         }
     }
+}
+
+fn main() {
+    validate_arguments();
+    let (data_path, parameters_path) = get_path_from_arguments();
+    let (data_file, parameters) = 
+        match obtain_file_with_parameters(data_path, parameters_path) {
+            Some((data_file, parameters)) => (BufReader::new(data_file), parameters),
+            _ => {
+                eprintln!("Error: Couldn't read the file.");
+                return;
+            }
+        };
+
+    println!("Parameters: \n{:?}\n", parameters);
+    
+    let (header, sep) = get_header_and_separator(parameters);
+
+    //Crear el archivo. Si existe, simplemente re-escribirlo supongo.
+    let clean_reviews = create_output_file();
+    
+    process_file(data_file, clean_reviews, header, sep);
 }
