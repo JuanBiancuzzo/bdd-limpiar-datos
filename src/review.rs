@@ -16,13 +16,13 @@ pub enum ErrorReview {
 
 #[derive(Debug)]
 pub struct Review {
-    id: String,
-    user_name: String,
-    content: String,
-    score: i32,
-    thumbs_up: i32,
-    app_version: String,
-    date: NaiveDateTime,
+    pub id: String,
+    pub user_name: String,
+    pub content: String,
+    pub score: i32,
+    pub thumbs_up: i32,
+    pub app_version: String,
+    pub date: NaiveDateTime,
 }
 
 impl Review {
@@ -94,11 +94,24 @@ impl Review {
             Err(_) => Err(ErrorReview::ThumbsUpNoUnNumero),
         }
     }
+    
+    //Versión que no conserva los nulos
+    // fn get_app_version(app_version: &str) -> Result<String, ErrorReview> {
+    //     let re = Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").expect("Deberia ser un regex valido");
+    //     if re.is_match(app_version){
+    //         Ok(app_version.to_string())
+    //     } else {
+    //         Err(ErrorReview::VersionAppFormatoInvalido)
+    //     }
+    // }
 
+    //Versión que conserva los nulos pero los convierte a 0
     fn get_app_version(app_version: &str) -> Result<String, ErrorReview> {
         let re = Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").expect("Deberia ser un regex valido");
-        if re.is_match(app_version) {
+        if re.is_match(app_version){
             Ok(app_version.to_string())
+        } else if app_version == "" {
+            Ok("0".to_string())
         } else {
             Err(ErrorReview::VersionAppFormatoInvalido)
         }

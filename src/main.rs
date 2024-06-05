@@ -3,7 +3,7 @@ mod review;
 use serde_json::Value;
 use std::env;
 use std::fs::{self, File};
-use std::io::{BufRead, BufReader};
+use std::io::{BufRead, BufReader, Write};
 use std::process::exit;
 
 const OUTPUT_FILE : &str = "datos/clean_reviews.csv";
@@ -95,14 +95,11 @@ fn get_header_and_separator(parameters : Value) -> (usize, String){
     return (header, sep)
 }
 
-fn process_file(data_file : BufReader<File>, clean_reviews : File, header : usize, sep : String) {
+fn process_file(data_file : BufReader<File>, mut clean_reviews : File, header : usize, sep : String) {
     for (i, line) in data_file.lines().enumerate() {
         if i < header {
-            //Escribir el encabezado en el archivo
+            writeln!(clean_reviews, "{}", line.unwrap()).expect("Error al escribir la cabecera en el archivo");
             continue;
-        }
-        if i >= 5 + header {
-            break;
         }
     
         let line = match line {
@@ -112,14 +109,22 @@ fn process_file(data_file : BufReader<File>, clean_reviews : File, header : usiz
                 return;
             }
         };
-    
         match review::Review::new(&line, &sep) {
             Ok(review) => {
-                println!("{}", review);
-                println!("Valid review!\n");
+                writeln!(
+                    clean_reviews,
+                    "{};{};{};{};{};{};{}",
+                    review.id,
+                    review.user_name,
+                    review.content,
+                    review.score,
+                    review.thumbs_up,
+                    review.app_version,
+                    review.date
+                ).expect("Error al escribir la reseña en el archivo");
             },
-            Err(error) => {
-                println!("Invalid review! \n\tPor {:?}\n", error);
+            Err(_error) => {
+
             }
         }
     }
