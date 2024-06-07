@@ -113,14 +113,14 @@ fn process_file(data_file : BufReader<File>, mut clean_reviews : File, header : 
             Ok(review) => {
                 writeln!(
                     clean_reviews,
-                    "{};{};{};{};{};{};{}",
+                    "\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\"",
                     review.id,
                     review.user_name,
                     review.content,
                     review.score,
                     review.thumbs_up,
-                    review.app_version,
-                    review.date
+                    review.date,
+                    review.app_version
                 ).expect("Error al escribir la reseña en el archivo");
             },
             Err(_error) => {
