@@ -29,3 +29,39 @@ Tiempo total de procesamiento: 197 segundos (3.28 minutos)
 Cantidad de líneas sin errores: 59389
 Cantidad de líneas con errores: 52077
 --------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-07 23:45:47.179098545 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-07 23:49:07.335871913 -03:00
+Tiempo total de procesamiento: 200 segundos (3.33 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-08 00:21:52.461606306 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-08 00:25:13.654814974 -03:00
+Tiempo total de procesamiento: 201 segundos (3.35 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-08 00:26:53.632349777 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-08 00:30:02.688879864 -03:00
+Tiempo total de procesamiento: 189 segundos (3.15 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-08 00:37:54.535367561 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-08 00:41:17.601884327 -03:00
+Tiempo total de procesamiento: 203 segundos (3.38 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-08 01:02:49.385485801 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-08 01:06:21.507012144 -03:00
+Tiempo total de procesamiento: 212 segundos (3.53 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-08 01:11:32.883426659 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-08 01:14:28.362824155 -03:00
+Tiempo total de procesamiento: 175 segundos (2.92 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------

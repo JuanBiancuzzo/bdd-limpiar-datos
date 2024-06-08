@@ -1,0 +1,14 @@
+Inicio del proceso: 2024-06-08 01:06:36.110282
+Fin del proceso: 2024-06-08 01:07:36.110282
+Tiempo total: 0:01:14.582927
+Total de filas procesadas: 59389
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-08 01:14:28.381844
+Fin del proceso: 2024-06-08 01:15:32.608552
+Tiempo total: 0:01:04.226708
+Total de filas procesadas: 59389
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------

@@ -177,8 +177,6 @@ fn main() {
                 return;
             }
         };
-
-    println!("Parameters: \n{:?}\n", parameters);
     
     let (header, sep) = get_header_and_separator(parameters);
 
