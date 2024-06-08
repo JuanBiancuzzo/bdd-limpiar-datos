@@ -34,7 +34,6 @@ def get_or_create_user(cursor, user_name):
         return cursor.lastrowid
     
 def process_reviews(reviews_path, db_path):
-    print(f"Procesando reviews desde {reviews_path} hacia {db_path}")
     # Conexion a la base de datos
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -64,7 +63,6 @@ def process_reviews(reviews_path, db_path):
                 print(f"Error al procesar la fila {row}")
                 print(f"Error: {e}")
 
-    print("Proceso terminado")
     # Guardar cambios y cerrar la conexión
     conn.commit()
     conn.close()
@@ -75,7 +73,6 @@ def main():
     else:
         reviews_path = sys.argv[1] 
         db_path = sys.argv[2]
-        #print(f"Procesando reviews desde {reviews_path} hacia {db_path}")
         process_reviews(reviews_path, db_path)
 
 if __name__ == "__main__":
