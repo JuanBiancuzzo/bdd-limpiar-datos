@@ -46,7 +46,7 @@ with open('clean_reviews.csv', 'r', encoding='utf-8') as csvfile:
             content = row['content']
             score = row['score']            
             thumbs_up_count = row['thumbsUpCount']
-            created_at = datetime.strptime(row['at'], '%Y-%m-%d %H:%M:%S')
+            created_at = datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
             app_version = row['appVersion']
 
             version_id = get_or_create_app_version(cursor, app_version)
