@@ -146,7 +146,6 @@ fn main() {
     
     let (header, sep) = get_header_and_separator(parameters);
 
-    //Crear el archivo. Si existe, simplemente re-escribirlo supongo.
     let clean_reviews = create_output_file();
     
     process_file(data_file, clean_reviews, header, sep);
