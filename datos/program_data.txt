@@ -1,0 +1,31 @@
+Inicio del procesamiento del archivo de datos: 2024-06-07 18:13:26.294704916 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-07 18:17:14.739649568 -03:00
+Cantidad de líneas totales procesadas: 111466
+Cantidad de líneas sin errores: 70369
+Cantidad de líneas con errores: 41097
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-07 18:23:41.477744623 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-07 18:27:15.644889765 -03:00
+Tiempo total de procesamiento: 214 segundos
+Cantidad de líneas totales procesadas: 111466
+Cantidad de líneas sin errores: 70369
+Cantidad de líneas con errores: 41097
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-07 18:41:29.541041224 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-07 18:45:04.720818887 -03:00
+Tiempo total de procesamiento: 215 segundos (3.58 minutos)
+Cantidad de líneas sin errores: 70369
+Cantidad de líneas con errores: 41097
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-07 18:45:46.058977454 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-07 18:49:32.177950578 -03:00
+Tiempo total de procesamiento: 226 segundos (3.77 minutos)
+Cantidad de líneas sin errores: 70369
+Cantidad de líneas con errores: 41097
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-07 22:52:15.320689431 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-07 22:55:32.689400328 -03:00
+Tiempo total de procesamiento: 197 segundos (3.28 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
