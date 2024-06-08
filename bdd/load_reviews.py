@@ -2,6 +2,7 @@ import csv
 import sqlite3
 from datetime import datetime
 import re
+import sys
 
 def get_or_create_app_version(cursor, app_version):
     match = re.match(r'(\d+\.\d+\.\d+) build (\d+) (\d+)', app_version)
@@ -31,36 +32,51 @@ def get_or_create_user(cursor, user_name):
     else:
         cursor.execute("INSERT INTO NetflixUser (userName) VALUES (?)", (user_name,))
         return cursor.lastrowid
+    
+def process_reviews(reviews_path, db_path):
+    print(f"Procesando reviews desde {reviews_path} hacia {db_path}")
+    # Conexion a la base de datos
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
 
-# Conexion a la base de datos
-conn = sqlite3.connect('reviews.db')
-cursor = conn.cursor()
+    with open(reviews_path, 'r', encoding='utf-8') as csvfile:
+        csvreader = csv.DictReader(csvfile)
 
-with open('clean_reviews.csv', 'r', encoding='utf-8') as csvfile:
-    csvreader = csv.DictReader(csvfile)
+        for row in csvreader:
+            try:
+                review_id = row['reviewId']
+                user_name = row['userName']
+                content = row['content']
+                score = row['score']            
+                thumbs_up_count = row['thumbsUpCount']
+                created_at = datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
+                app_version = row['appVersion']
 
-    for row in csvreader:
-        try:
-            review_id = row['reviewId']
-            user_name = row['userName']
-            content = row['content']
-            score = row['score']            
-            thumbs_up_count = row['thumbsUpCount']
-            created_at = datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
-            app_version = row['appVersion']
+                version_id = get_or_create_app_version(cursor, app_version)
+                user_id = get_or_create_user(cursor, user_name)
 
-            version_id = get_or_create_app_version(cursor, app_version)
-            user_id = get_or_create_user(cursor, user_name)
+                # Insertar la review incluyendo a los ids de usuario y versión
+                cursor.execute("""
+                INSERT INTO NetflixReview (reviewID, userID, content, score, thumbsUpCount, createdAt, versionId)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """, (review_id, user_id, content, score, thumbs_up_count, created_at, version_id))
+            except Exception as e:
+                print(f"Error al procesar la fila {row}")
+                print(f"Error: {e}")
 
-            # Insertar la review incluyendo a los ids de usuario y versión
-            cursor.execute("""
-            INSERT INTO NetflixReview (reviewID, userID, content, score, thumbsUpCount, createdAt, versionId)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (review_id, user_id, content, score, thumbs_up_count, created_at, version_id))
-        except Exception as e:
-            print(f"Error al procesar la fila {row}")
-            print(f"Error: {e}")
+    print("Proceso terminado")
+    # Guardar cambios y cerrar la conexión
+    conn.commit()
+    conn.close()
 
-# Guardar cambios y cerrar la conexión
-conn.commit()
-conn.close()
+def main():
+    if len(sys.argv) != 3:
+        print("Uso: python load_reviews.py <archivo> <base de datos>")
+    else:
+        reviews_path = sys.argv[1] 
+        db_path = sys.argv[2]
+        #print(f"Procesando reviews desde {reviews_path} hacia {db_path}")
+        process_reviews(reviews_path, db_path)
+
+if __name__ == "__main__":
+    main()
