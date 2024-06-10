@@ -1,4 +1,5 @@
 mod review;
+mod duplicates;
 
 use chrono::Local;
 use serde_json::Value;
@@ -185,4 +186,6 @@ fn main() {
     let clean_reviews = create_output_file();
     
     process_file(data_file, clean_reviews, program_data, header, sep);
+
+    duplicates::filter_duplicates();
 }
