@@ -1,23 +1,25 @@
-mod review;
 mod duplicates;
+mod load_reviews;
+mod review;
 
-use chrono::Local;
+use chrono::{DateTime, Local, NaiveDateTime};
 use serde_json::Value;
-use std::env;
-use std::fs::{self, File};
-use std::io::{BufRead, BufReader, Write};
-use std::process::exit;
+use std::collections::HashMap;
 use std::fs::OpenOptions;
+use std::fs::{self, File};
+use std::io::{BufRead, BufReader, BufWriter, Write};
+use std::process::exit;
+use std::{env, io};
 
-const OUTPUT_FILE : &str = "datos/clean_reviews.csv";
-const PROGRAM_DATA : &str = "datos/program_data.txt";
+const OUTPUT_FILE: &str = "datos/clean_reviews.csv";
+const PROGRAM_DATA: &str = "datos/program_data.txt";
 
-
-fn get_program_data_file(file_path : String) -> File {
+fn get_program_data_file(file_path: String) -> File {
     let file = OpenOptions::new()
-    .append(true)  
-    .create(true)
-    .open(file_path).expect("Error: Couldn't open the file.");
+        .append(true)
+        .create(true)
+        .open(file_path)
+        .expect("Error: Couldn't open the file.");
     return file;
 }
 
@@ -89,15 +91,15 @@ fn validate_arguments() {
 
 fn get_path_from_arguments() -> (Option<String>, Option<String>, Option<String>) {
     let arguments: Vec<String> = env::args().collect();
-    
+
     let path_datos = arguments.get(1).cloned();
     let path_parametros = arguments.get(2).cloned();
     let path_program_data = arguments.get(3).cloned();
-    
+
     (path_datos, path_parametros, path_program_data)
 }
 
-fn get_header_and_separator(parameters : Value) -> (usize, String){
+fn get_header_and_separator(parameters: Value) -> (usize, String) {
     let header: usize = match &parameters["header"] {
         Value::Number(header) if header.is_u64() => header.as_u64().unwrap().try_into().unwrap(),
         _ => exit(1),
@@ -108,35 +110,106 @@ fn get_header_and_separator(parameters : Value) -> (usize, String){
         _ => exit(1),
     };
 
-    return (header, sep)
+    return (header, sep);
 }
 
-fn process_file(data_file : BufReader<File>, mut clean_reviews : File, mut program_data : File, header : usize, sep : String) {
-    let start_time = Local::now();
-    let start_time_str = start_time.to_string();
-    let message = "Inicio del procesamiento del archivo de datos: ".to_string() + &start_time_str;
-    writeln!(program_data, "{}", message).expect("Error al escribir en el archivo de datos del programa");
+fn get_bufreader_from_file(path: &str) -> io::Result<BufReader<File>> {
+    let file = File::open(path).expect("Error: Couldn't open the file.");
+    Ok(BufReader::new(file))
+}
 
+fn get_bufwriter_from_file(path: &str) -> io::Result<BufWriter<File>> {
+    let file = File::create(path).expect("Error: Couldn't create the file.");
+    Ok(BufWriter::new(file))
+}
+
+fn log_start(program_data: &mut File) -> io::Result<DateTime<Local>> {
+    let start_time = Local::now();
+    let start_time_string = start_time.to_string();
+    let message = "Inicio del procesamiento del archivo de datos: ".to_string() + &start_time_string;
+    writeln!(program_data, "{}", message)?;
+    Ok(start_time)
+}
+
+fn log_end(program_data: &mut File, start_time: DateTime<Local>) -> io::Result<()> {
+    let end_time = Local::now();
+    let end_time_str = end_time.to_string();
+    writeln!(
+        program_data,
+        "Fin del procesamiento del archivo de datos: {}",
+        end_time_str
+    )?;
+    let duration = end_time - start_time;
+    let seconds = duration.num_seconds();
+    let minutes = seconds as f64 / 60.0;
+    let duration_str = format!(
+        "Tiempo total de procesamiento: {} segundos ({:.2} minutos)",
+        seconds, minutes
+    );
+    writeln!(program_data, "{}", duration_str)?;
+    Ok(())
+}
+
+fn log_stats(program_data: &mut File, contador_ok: i32, contador_error: i32) -> io::Result<()> {
+    writeln!(
+        program_data,
+        "Cantidad de líneas sin errores: {}",
+        contador_ok
+    )?;
+    writeln!(
+        program_data,
+        "Cantidad de líneas con errores: {}",
+        contador_error
+    )?;
+    writeln!(
+        program_data,
+        "--------------------------------------------------------------------------------------"
+    )?;
+    Ok(())
+}
+
+fn write_header(writer: &mut BufWriter<File>) -> io::Result<()> {
+    writeln!(
+        writer,
+        "reviewId,userName,content,score,thumbsUpCount,date,appVersion"
+    )?;
+    Ok(())
+}
+
+fn process_lines(
+    data_file: BufReader<File>,
+    writer: &mut BufWriter<File>,
+    header: usize,
+    latest_reviews: HashMap<String, NaiveDateTime>,
+    sep: String,
+) -> io::Result<(i32, i32)>{
     let mut contador_ok = 0;
     let mut contador_error = 0;
-    for (i, line) in data_file.lines().enumerate() {
-        if i < header {
-            writeln!(clean_reviews, "reviewId,userName,content,score,thumbsUpCount,date,appVersion").expect("Error al escribir la cabecera en el archivo");
-            continue;
-        }
-    
+    let mut contador_repetidos = 0;
+
+    write_header(writer)?;
+
+    for line in data_file.lines().skip(header) {
         let line = match line {
             Ok(line) => line,
             Err(_) => {
-                eprintln!("Error al leer la línea del archivo de datos");
-                return;
+                contador_error += 1;
+                continue;
             }
         };
+
         match review::Review::new(&line, &sep) {
             Ok(review) => {
-                contador_ok+=1;
+                if let Some(date) = latest_reviews.get(&review.id) {
+                    if review.date != *date {
+                        contador_repetidos += 1;
+                        continue;
+                    }
+                }
+
+                contador_ok += 1;
                 writeln!(
-                    clean_reviews,
+                    writer,
                     "\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\"",
                     review.id,
                     review.user_name,
@@ -145,47 +218,66 @@ fn process_file(data_file : BufReader<File>, mut clean_reviews : File, mut progr
                     review.thumbs_up,
                     review.date,
                     review.app_version
-                ).expect("Error al escribir la reseña en el archivo");
-            },
+                )
+                .expect("Error al escribir la reseña en el archivo");
+            }
             Err(_error) => {
-                contador_error+=1;
+                contador_error += 1;
             }
         }
     }
-    let end_time = Local::now();
-    let end_time_str = end_time.to_string();
-    writeln!(program_data, "Fin del procesamiento del archivo de datos: {}", end_time_str).expect("Error al escribir en el archivo de datos del programa");
 
-    let duration = end_time - start_time;
-    let seconds = duration.num_seconds();
-    let minutes = seconds as f64 / 60.0;
+    if contador_repetidos > 0 {
+        eprintln!("There were {} repeated UUIDs in the file.", contador_repetidos);
+    }
 
-    let duration_str = format!("Tiempo total de procesamiento: {} segundos ({:.2} minutos)", seconds, minutes);
-    writeln!(program_data, "{}", duration_str).expect("Error al escribir en el archivo de datos del programa");
-    writeln!(program_data, "Cantidad de líneas sin errores: {}", contador_ok).expect("Error al escribir en el archivo de datos del programa");
-    writeln!(program_data, "Cantidad de líneas con errores: {}", contador_error).expect("Error al escribir en el archivo de datos del programa");
-    writeln!(program_data, "--------------------------------------------------------------------------------------").expect("Error al escribir en el archivo de datos del programa");
+    writer.flush().expect("Error: Couldn't flush the buffer.");
+    Ok((contador_ok, contador_error))
+}
+
+fn process_file(
+    data_path: &str,
+    output_path: &str,
+    mut program_data: File,
+    header: usize,
+    sep: String,
+) -> io::Result<()>{
+    let data_file = get_bufreader_from_file(&data_path)?;
+    let mut writer = get_bufwriter_from_file(output_path)?;
+    let latests_reviews = duplicates::get_uuids_set(data_path);
+    let start_time = log_start(&mut program_data)?;
+    let (contador_ok, contador_error) = match process_lines(data_file, &mut writer, header, latests_reviews, sep) {
+        Ok((ok, error)) => (ok, error),
+        Err(_) => {
+            eprintln!("Error: Couldn't process the file.");
+            return Ok(());
+        }
+    };
+    log_end(&mut program_data, start_time)?;
+    log_stats(&mut program_data, contador_ok, contador_error)?;
+    Ok(())
 }
 
 fn main() {
     validate_arguments();
     let (data_path, parameters_path, program_data_path) = get_path_from_arguments();
-    let (data_file, parameters) = 
-        match obtain_file_with_parameters(data_path, parameters_path) {
-            Some((data_file, parameters)) => (BufReader::new(data_file), parameters),
-            _ => {
-                eprintln!("Error: Couldn't read the file.");
-                return;
-            }
-        };
-    
-    let (header, sep) = get_header_and_separator(parameters);
+    let (_, parameters) = match obtain_file_with_parameters(data_path.clone(), parameters_path) {
+        Some((data_file, parameters)) => (BufReader::new(data_file), parameters),
+        _ => {
+            eprintln!("Error: Couldn't read the file.");
+            return;
+        }
+    };
 
+    let (header, sep) = get_header_and_separator(parameters);
     let program_data = get_program_data_file(program_data_path.unwrap_or(PROGRAM_DATA.to_string()));
 
-    let clean_reviews = create_output_file();
-    
-    process_file(data_file, clean_reviews, program_data, header, sep);
-
-    duplicates::filter_duplicates();
+    let result = process_file(&data_path.expect("Error: Couldn't read the file."), OUTPUT_FILE, program_data, header, sep);
+    match result {
+        Ok(_) => (),
+        Err(_) => {
+            eprintln!("Error: Couldn't process the file.");
+            return;
+        }
+    }
 }

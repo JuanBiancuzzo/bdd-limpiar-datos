@@ -1,6 +1,6 @@
-use std::fmt::{self, Display};
-use regex::Regex;
 use chrono::NaiveDateTime;
+use regex::Regex;
+use std::fmt::{self, Display};
 
 #[derive(Debug)]
 pub enum ErrorReview {
@@ -36,17 +36,18 @@ impl Review {
             id: Self::get_id(fields[0])?,
             user_name: Self::get_user_name(fields[1])?,
             content: Self::get_comment(fields[2])?,
-            score: Self::get_score(fields[3])?, 
-            thumbs_up: Self::get_thumbs_up(fields[4])?, 
+            score: Self::get_score(fields[3])?,
+            thumbs_up: Self::get_thumbs_up(fields[4])?,
             date: Self::get_date(&fields[6])?,
-            app_version: Self::get_app_version(fields[5])?, 
+            app_version: Self::get_app_version(fields[5])?,
         })
     }
 
     fn get_id(id: &str) -> Result<String, ErrorReview> {
         let re = Regex::new(
             r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
-        ).expect("Deberia ser un regex valido");
+        )
+        .expect("Deberia ser un regex valido");
 
         if re.is_match(id) {
             Ok(id.to_string())
@@ -94,28 +95,16 @@ impl Review {
             Err(_) => Err(ErrorReview::ThumbsUpNoUnNumero),
         }
     }
-    
+
     // Versión que no conserva los nulos
     fn get_app_version(app_version: &str) -> Result<String, ErrorReview> {
         let re = Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").expect("Deberia ser un regex valido");
-        if re.is_match(app_version){
+        if re.is_match(app_version) {
             Ok(app_version.to_string())
         } else {
             Err(ErrorReview::VersionAppFormatoInvalido)
         }
     }
-
-    //Versión que conserva los nulos pero los convierte a 0
-    // fn get_app_version(app_version: &str) -> Result<String, ErrorReview> {
-    //     let re = Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").expect("Deberia ser un regex valido");
-    //     if re.is_match(app_version){
-    //         Ok(app_version.to_string())
-    //     } else if app_version == "" {
-    //         Ok("0".to_string())
-    //     } else {
-    //         Err(ErrorReview::VersionAppFormatoInvalido)
-    //     }
-    // }
 }
 
 impl Display for Review {
