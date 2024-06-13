@@ -23,23 +23,6 @@ fn get_program_data_file(file_path: String) -> File {
     return file;
 }
 
-fn file_exists(path: &str) -> bool {
-    fs::metadata(path).is_ok()
-}
-
-fn create_output_file() -> File {
-    if file_exists(OUTPUT_FILE) {
-        match fs::remove_file(OUTPUT_FILE) {
-            Ok(_) => (),
-            Err(_) => {
-                eprintln!("Error: Couldn't remove the file.");
-                exit(1);
-            }
-        }
-    }
-    fs::File::create(OUTPUT_FILE).expect("Error: Couldn't create the file.")
-}
-
 fn obtain_file_with_parameters(
     path_datos: Option<String>,
     path_parametros: Option<String>,
@@ -126,7 +109,8 @@ fn get_bufwriter_from_file(path: &str) -> io::Result<BufWriter<File>> {
 fn log_start(program_data: &mut File) -> io::Result<DateTime<Local>> {
     let start_time = Local::now();
     let start_time_string = start_time.to_string();
-    let message = "Inicio del procesamiento del archivo de datos: ".to_string() + &start_time_string;
+    let message =
+        "Inicio del procesamiento del archivo de datos: ".to_string() + &start_time_string;
     writeln!(program_data, "{}", message)?;
     Ok(start_time)
 }
@@ -177,19 +161,19 @@ fn write_header(writer: &mut BufWriter<File>) -> io::Result<()> {
 }
 
 fn process_lines(
-    data_file: BufReader<File>,
-    writer: &mut BufWriter<File>,
+    data_file_reader: BufReader<File>,
+    output_writer: &mut BufWriter<File>,
     header: usize,
     latest_reviews: HashMap<String, NaiveDateTime>,
     sep: String,
-) -> io::Result<(i32, i32)>{
+) -> io::Result<(i32, i32)> {
     let mut contador_ok = 0;
     let mut contador_error = 0;
     let mut contador_repetidos = 0;
 
-    write_header(writer)?;
+    write_header(output_writer)?;
 
-    for line in data_file.lines().skip(header) {
+    for line in data_file_reader.lines().skip(header) {
         let line = match line {
             Ok(line) => line,
             Err(_) => {
@@ -208,8 +192,8 @@ fn process_lines(
                 }
 
                 contador_ok += 1;
-                writeln!(
-                    writer,
+                // Format the string with the correct format
+                let new_line = format!(
                     "\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\"",
                     review.id,
                     review.user_name,
@@ -218,8 +202,14 @@ fn process_lines(
                     review.thumbs_up,
                     review.date,
                     review.app_version
-                )
-                .expect("Error al escribir la reseña en el archivo");
+                );
+
+                match writeln!(output_writer, "{}", new_line) {
+                    Ok(_) => (),
+                    Err(_) => {
+                        contador_error += 1;
+                    }
+                }
             }
             Err(_error) => {
                 contador_error += 1;
@@ -228,10 +218,15 @@ fn process_lines(
     }
 
     if contador_repetidos > 0 {
-        eprintln!("There were {} repeated UUIDs in the file.", contador_repetidos);
+        eprintln!(
+            "There were {} repeated UUIDs in the file.",
+            contador_repetidos
+        );
     }
 
-    writer.flush().expect("Error: Couldn't flush the buffer.");
+    output_writer
+        .flush()
+        .expect("Error: Couldn't flush the buffer.");
     Ok((contador_ok, contador_error))
 }
 
@@ -241,18 +236,19 @@ fn process_file(
     mut program_data: File,
     header: usize,
     sep: String,
-) -> io::Result<()>{
-    let data_file = get_bufreader_from_file(&data_path)?;
+) -> io::Result<()> {
+    let data_file_reader = get_bufreader_from_file(&data_path)?;
     let mut writer = get_bufwriter_from_file(output_path)?;
     let latests_reviews = duplicates::get_uuids_set(data_path);
     let start_time = log_start(&mut program_data)?;
-    let (contador_ok, contador_error) = match process_lines(data_file, &mut writer, header, latests_reviews, sep) {
-        Ok((ok, error)) => (ok, error),
-        Err(_) => {
-            eprintln!("Error: Couldn't process the file.");
-            return Ok(());
-        }
-    };
+    let (contador_ok, contador_error) =
+        match process_lines(data_file_reader, &mut writer, header, latests_reviews, sep) {
+            Ok((ok, error)) => (ok, error),
+            Err(_) => {
+                eprintln!("Error: Couldn't process the file.");
+                return Ok(());
+            }
+        };
     log_end(&mut program_data, start_time)?;
     log_stats(&mut program_data, contador_ok, contador_error)?;
     Ok(())
@@ -272,7 +268,13 @@ fn main() {
     let (header, sep) = get_header_and_separator(parameters);
     let program_data = get_program_data_file(program_data_path.unwrap_or(PROGRAM_DATA.to_string()));
 
-    let result = process_file(&data_path.expect("Error: Couldn't read the file."), OUTPUT_FILE, program_data, header, sep);
+    let result = process_file(
+        &data_path.expect("Error: Couldn't read the file."),
+        OUTPUT_FILE,
+        program_data,
+        header,
+        sep,
+    );
     match result {
         Ok(_) => (),
         Err(_) => {

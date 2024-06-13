@@ -1,4 +1,5 @@
 use chrono::NaiveDateTime;
+use lazy_static::lazy_static;
 use regex::Regex;
 use std::fmt::{self, Display};
 
@@ -25,6 +26,15 @@ pub struct Review {
     pub app_version: String,
 }
 
+lazy_static! {
+    static ref RE: Regex = Regex::new(
+        r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    )
+    .expect("Deberia ser un regex valido");
+
+    static ref RE_APP_VERSION: Regex =
+        Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").expect("Deberia ser un regex valido");
+}
 impl Review {
     pub fn new(linea: &str, sep: &str) -> Result<Self, ErrorReview> {
         let fields: Vec<&str> = linea.split(sep).collect();
@@ -44,12 +54,7 @@ impl Review {
     }
 
     fn get_id(id: &str) -> Result<String, ErrorReview> {
-        let re = Regex::new(
-            r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
-        )
-        .expect("Deberia ser un regex valido");
-
-        if re.is_match(id) {
+        if RE.is_match(id) {
             Ok(id.to_string())
         } else {
             Err(ErrorReview::IdFormatoInvalido)
@@ -96,10 +101,8 @@ impl Review {
         }
     }
 
-    // Versión que no conserva los nulos
     fn get_app_version(app_version: &str) -> Result<String, ErrorReview> {
-        let re = Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").expect("Deberia ser un regex valido");
-        if re.is_match(app_version) {
+        if RE_APP_VERSION.is_match(app_version) {
             Ok(app_version.to_string())
         } else {
             Err(ErrorReview::VersionAppFormatoInvalido)

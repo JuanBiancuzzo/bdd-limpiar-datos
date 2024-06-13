@@ -4,9 +4,8 @@ use std::{
     io::{BufRead, BufReader},
 };
 
-
-use chrono::NaiveDateTime;
 use crate::review::Review;
+use chrono::NaiveDateTime;
 
 pub fn get_uuids_set(file_path: &str) -> HashMap<String, NaiveDateTime> {
     let file = File::open(file_path).expect("Error: CouldNaiveDatefile.");
@@ -31,16 +30,18 @@ pub fn get_uuids_set(file_path: &str) -> HashMap<String, NaiveDateTime> {
                 }
             }
             Err(e) => {
-                eprintln!("Error processing line: {:?} - {:?}", line, e);
                 error_count += 1;
             }
         }
     }
 
     if error_count > 0 {
-        eprintln!("There were {} errors while processing the file.", error_count);
+        eprintln!(
+            "There were {} errors while processing the file.",
+            error_count
+        );
     }
-    
+
     if repeated_count > 0 {
         eprintln!("There were {} repeated UUIDs in the file.", repeated_count);
     }
