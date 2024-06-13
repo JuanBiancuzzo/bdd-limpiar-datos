@@ -12,7 +12,6 @@ pub enum ErrorReview {
     ScoreNoUnNumero,
     ThumbsUpNoUnNumero,
     IdFormatoInvalido,
-    VersionAppFormatoInvalido,
 }
 
 #[derive(Debug)]
