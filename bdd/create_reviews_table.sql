@@ -6,8 +6,7 @@ CREATE TABLE IF NOT EXISTS NetflixAppVersion (
 );
 
 CREATE TABLE IF NOT EXISTS NetflixReview (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    reviewId CHAR(36),
+    reviewId CHAR(36) PRIMARY KEY UNIQUE,
     userID VARCHAR(100),
     content TEXT,
     score INT,
@@ -15,9 +14,10 @@ CREATE TABLE IF NOT EXISTS NetflixReview (
     createdAt TIMESTAMP,
     versionId INT,
     FOREIGN KEY (versionId) REFERENCES NetflixAppVersion(versionId)
+    FOREIGN KEY (userID) REFERENCES NetflixUser(userID)
 );
 
 CREATE TABLE IF NOT EXISTS NetflixUser (
-    userId INTEGER PRIMARY KEY AUTOINCREMENT,
+    userID INTEGER PRIMARY KEY AUTOINCREMENT,
     userName VARCHAR(100)
 );

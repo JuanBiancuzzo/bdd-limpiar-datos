@@ -26,3 +26,24 @@ Total de filas procesadas: 59134
 Filas con errores: 0
 El proceso se completó exitosamente
 --------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 12:07:09.097140
+Fin del proceso: 2024-06-13 12:08:24.113533
+Tiempo total: 0:01:15.016393
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 13:50:26.879986
+Fin del proceso: 2024-06-13 13:51:42.406661
+Tiempo total: 0:01:15.526675
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 13:54:56.417963
+Fin del proceso: 2024-06-13 13:56:12.937196
+Tiempo total: 0:01:16.519233
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
