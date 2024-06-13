@@ -10,6 +10,7 @@ OUTPUT_PATH = "load_to_db_data.txt"
 
 def get_or_create_app_version(cursor, app_version):
     match = re.match(r'(\d+\.\d+\.\d+) build (\d+) (\d+)', app_version)
+
     if not match:
         raise ValueError(f"Formato de versión no válido: {app_version}")
     

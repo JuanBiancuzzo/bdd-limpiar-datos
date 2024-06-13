@@ -104,7 +104,8 @@ impl Review {
         if RE_APP_VERSION.is_match(app_version) {
             Ok(app_version.to_string())
         } else {
-            Err(ErrorReview::VersionAppFormatoInvalido)
+            // Pass a 0 version if it's not in the correct format
+            Ok("0.0.0 build 0 0".to_string())
         }
     }
 }
