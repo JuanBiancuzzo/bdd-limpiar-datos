@@ -184,7 +184,7 @@ fn write_review(
 fn process_line(
     line: String,
     output_writer: &mut BufWriter<File>,
-    latest_reviews: &mut HashMap<String, NaiveDateTime>,
+    latest_reviews: &HashMap<String, NaiveDateTime>,
     seen_uuids: &mut HashSet<String>,
     sep: &str,
 ) -> io::Result<()> {
@@ -239,7 +239,7 @@ fn process_lines(
         match process_line(
             line,
             output_writer,
-            &mut latest_reviews.clone(),
+            &latest_reviews,
             &mut seen_uuids,
             &sep,
         ) {
