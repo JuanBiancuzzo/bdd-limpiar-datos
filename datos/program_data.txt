@@ -151,3 +151,136 @@ Tiempo total de procesamiento: 0 segundos (0.00 minutos)
 Cantidad de líneas sin errores: 59336
 Cantidad de líneas con errores: 52077
 --------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:22:30.141598501 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:22:31.029636266 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:25:12.767707205 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:25:13.626985551 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:38:53.698522220 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:38:54.626141869 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:40:42.917057315 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:40:43.751677464 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 0
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:41:01.865336182 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:41:02.774905874 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:41:13.744629546 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:41:14.627106755 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:41:21.157132544 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:41:21.919756027 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 53
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:42:40.346280785 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:42:41.290192840 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:43:05.482638131 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:43:06.307185575 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:49:17.859263207 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:49:18.699406383 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:49:54.620914616 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:49:55.445848469 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:54:17.971908817 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:54:18.828441850 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:55:12.945298478 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:55:13.804423340 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:55:47.656164504 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:55:48.547568272 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:56:36.361234210 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:56:37.282150504 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-12 23:58:07.680333578 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-12 23:58:08.603891863 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59336
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-13 00:00:26.917363708 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-13 00:00:27.856646260 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59134
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-13 00:01:42.120856801 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-13 00:01:43.060022399 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59134
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-13 00:37:07.482820053 -03:00
+Inicio del procesamiento del archivo de datos: 2024-06-13 00:41:51.020983400 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-13 00:41:51.973114580 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-13 09:51:15.953922096 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-13 09:51:16.922997558 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-13 09:51:35.324960077 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-13 09:51:36.274218258 -03:00
+Tiempo total de procesamiento: 0 segundos (0.00 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
+Inicio del procesamiento del archivo de datos: 2024-06-13 09:52:20.495207395 -03:00
+Fin del procesamiento del archivo de datos: 2024-06-13 09:52:21.496505381 -03:00
+Tiempo total de procesamiento: 1 segundos (0.02 minutos)
+Cantidad de líneas sin errores: 59389
+Cantidad de líneas con errores: 52077
+--------------------------------------------------------------------------------------
