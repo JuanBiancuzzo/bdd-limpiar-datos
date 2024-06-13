@@ -17,7 +17,6 @@ def get_or_create_app_version(cursor, app_version):
     build_number = match.group(2)
     build_code = match.group(3)
 
-    # Verificar si la versión ya existe en la base de datos
     cursor.execute(GET_VERSION_ID_QUERY, (version, build_number, build_code))
     row = cursor.fetchone()
     if row:
@@ -25,7 +24,7 @@ def get_or_create_app_version(cursor, app_version):
     else:
         cursor.execute(INSERT_VERSION_QUERY, (version, build_number, build_code))
         return cursor.lastrowid
-    
+
 def get_or_create_user(cursor, user_name):
     cursor.execute(GET_USER_ID_QUERY, (user_name,))
     row = cursor.fetchone()
@@ -34,7 +33,20 @@ def get_or_create_user(cursor, user_name):
     else:
         cursor.execute(INSERT_USER_QUERY, (user_name,))
         return cursor.lastrowid
+
+def process_review_row(row, cursor):
+    review_id = row['reviewId']
+    user_name = row['userName']
+    content = row['content']
+    score = row['score']
+    thumbs_up_count = row['thumbsUpCount']
+    created_at = datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
+    app_version = row['appVersion']
+    version_id = get_or_create_app_version(cursor, app_version)
+    user_id = get_or_create_user(cursor, user_name)
     
+    cursor.execute(INSERT_REVIEW_QUERY,
+                   (review_id, user_id, content, score, thumbs_up_count, created_at, version_id))
 
 def process_reviews(reviews_path, db_path, output_path):
     start_time = datetime.now()
@@ -49,18 +61,7 @@ def process_reviews(reviews_path, db_path, output_path):
         csvreader = csv.DictReader(csvfile)
         for row in csvreader:
             try:
-                review_id = row['reviewId']
-                user_name = row['userName']
-                content = row['content']
-                score = row['score']
-                thumbs_up_count = row['thumbsUpCount']
-                created_at = datetime.strptime(row['date'], '%Y-%m-%d %H:%M:%S')
-                app_version = row['appVersion']
-                version_id = get_or_create_app_version(cursor, app_version)
-                user_id = get_or_create_user(cursor, user_name)
-                # Insertar la review incluyendo a los ids de usuario y versión
-                cursor.execute(INSERT_REVIEW_QUERY,
-                               (review_id, user_id, content, score, thumbs_up_count, created_at, version_id))
+                process_review_row(row, cursor)
                 total_rows += 1
             except Exception as e:
                 print(f"Error al procesar la fila {row}")
@@ -68,11 +69,13 @@ def process_reviews(reviews_path, db_path, output_path):
                 error_rows += 1
                 success = False
 
-    # Guardar cambios y cerrar la conexión
     conn.commit()
     conn.close()
 
     end_time = datetime.now()
+    log_to_file(output_path, start_time, end_time, total_rows, error_rows, success)
+
+def log_to_file(output_path, start_time, end_time, total_rows, error_rows, success):
     with open(output_path, "a", encoding="utf-8") as output_file:
         output_file.write(f"Inicio del proceso: {start_time}\n")
         output_file.write(f"Fin del proceso: {end_time}\n")
@@ -83,29 +86,21 @@ def process_reviews(reviews_path, db_path, output_path):
             output_file.write("El proceso se completó exitosamente\n")
         else:
             output_file.write("Ocurrieron errores durante el proceso\n")
-        output_file.write(f"--------------------------------------------------------------------------------------\n")
-
-
+        output_file.write("--------------------------------------------------------------------------------------\n")
 
 def main():
     if len(sys.argv) != 3 and len(sys.argv) != 4:
         print("Uso: python load_reviews.py <archivo> <base de datos> [opcional: <salida del programa>]")
-    elif len(sys.argv) == 3:
-        reviews_path = sys.argv[1] 
-        db_path = sys.argv[2]
-        output = OUTPUT_PATH  # Nombre del archivo de salida por defecto
-        if not os.path.isfile(output):  # Verifica si el archivo de salida no existe
-            open(output, 'w').close()  # Crea el archivo si no existe
-        output_mode = "a" if os.path.isfile(output) else "w"  # Modo "append" si el archivo existe, de lo contrario crea uno nuevo
-        process_reviews(reviews_path, db_path, output)
-    else:
-        reviews_path = sys.argv[1] 
-        db_path = sys.argv[2]
-        output = sys.argv[3]
-        if not os.path.isfile(output):  # Verifica si el archivo de salida no existe
-            open(output, 'w').close()  # Crea el archivo si no existe
-        output_mode = "a" if os.path.isfile(output) else "w"  # Modo "append" si el archivo existe, de lo contrario crea uno nuevo
-        process_reviews(reviews_path, db_path, output)
+        return
+    
+    reviews_path = sys.argv[1] 
+    db_path = sys.argv[2]
+    output = sys.argv[3] if len(sys.argv) == 4 else OUTPUT_PATH
+    
+    if not os.path.isfile(output):  # Verifica si el archivo de salida no existe
+        open(output, 'w').close()  # Crea el archivo si no existe
+
+    process_reviews(reviews_path, db_path, output)
 
 if __name__ == "__main__":
     main()

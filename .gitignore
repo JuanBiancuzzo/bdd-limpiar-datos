@@ -1,3 +1,4 @@
 /target
 /limpieza_datos/target
 bdd/*.db
+/logs/*.txt

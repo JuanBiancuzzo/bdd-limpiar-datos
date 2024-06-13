@@ -130,6 +130,10 @@ fn log_end(program_data: &mut File, start_time: DateTime<Local>) -> io::Result<(
         seconds, minutes
     );
     writeln!(program_data, "{}", duration_str)?;
+    writeln!(
+        program_data,
+        "--------------------------------------------------------------------------------------"
+    )?;
     Ok(())
 }
 
@@ -144,10 +148,7 @@ fn log_stats(program_data: &mut File, contador_ok: i32, contador_error: i32) -> 
         "Cantidad de líneas con errores: {}",
         contador_error
     )?;
-    writeln!(
-        program_data,
-        "--------------------------------------------------------------------------------------"
-    )?;
+    
     Ok(())
 }
 
@@ -272,8 +273,9 @@ fn process_file(
                 return Ok(());
             }
         };
-    log_end(&mut program_data, start_time)?;
     log_stats(&mut program_data, contador_ok, contador_error)?;
+    log_end(&mut program_data, start_time)?;
+
     Ok(())
 }
 
