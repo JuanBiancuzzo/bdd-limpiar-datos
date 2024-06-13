@@ -11,7 +11,7 @@ use std::process::exit;
 use std::{env, io};
 
 const OUTPUT_FILE: &str = "../datos/clean_reviews.csv";
-const PROGRAM_DATA: &str = "../datos/program_data.txt";
+const PROGRAM_DATA: &str = "../logs/program_data.txt";
 
 fn get_program_data_file(file_path: String) -> File {
     let file = OpenOptions::new()
