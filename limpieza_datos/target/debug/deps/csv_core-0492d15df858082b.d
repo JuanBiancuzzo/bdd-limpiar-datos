@@ -1,9 +1,0 @@
-/home/claram97/bdd-limpiar-datos/limpieza_datos/target/debug/deps/csv_core-0492d15df858082b.rmeta: /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/lib.rs /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/reader.rs /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/writer.rs
-
-/home/claram97/bdd-limpiar-datos/limpieza_datos/target/debug/deps/libcsv_core-0492d15df858082b.rlib: /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/lib.rs /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/reader.rs /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/writer.rs
-
-/home/claram97/bdd-limpiar-datos/limpieza_datos/target/debug/deps/csv_core-0492d15df858082b.d: /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/lib.rs /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/reader.rs /home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/writer.rs
-
-/home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/lib.rs:
-/home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/reader.rs:
-/home/claram97/.cargo/registry/src/index.crates.io-6f17d22bba15001f/csv-core-0.1.11/src/writer.rs:
