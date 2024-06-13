@@ -16,7 +16,7 @@ pub fn get_uuids_set(file_path: &str) -> HashMap<String, NaiveDateTime> {
 
     for line in reader.lines() {
         let line = line.expect("Error: Couldn't read the line.");
-        let line = line.replace("\"", "");
+        let line = line.replace('\"', "");
 
         match Review::new(&line, ",") {
             Ok(review) => {
@@ -26,10 +26,10 @@ pub fn get_uuids_set(file_path: &str) -> HashMap<String, NaiveDateTime> {
                         latest_dates.insert(review.id.clone(), review.date);
                     }
                 } else {
-                    latest_dates.insert(review.id.clone(), review.date.clone());
+                    latest_dates.insert(review.id.clone(), review.date);
                 }
             }
-            Err(e) => {
+            Err(_) => {
                 error_count += 1;
             }
         }

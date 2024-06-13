@@ -20,7 +20,7 @@ fn get_program_data_file(file_path: String) -> File {
         .create(true)
         .open(file_path)
         .expect("Error: Couldn't open the file.");
-    return file;
+    file
 }
 
 fn obtain_file_with_parameters(
@@ -93,7 +93,7 @@ fn get_header_and_separator(parameters: Value) -> (usize, String) {
         _ => exit(1),
     };
 
-    return (header, sep);
+    (header, sep)
 }
 
 fn get_bufreader_from_file(path: &str) -> io::Result<BufReader<File>> {
@@ -236,7 +236,13 @@ fn process_lines(
             }
         };
 
-        match process_line(line, output_writer, &mut latest_reviews.clone(), &mut seen_uuids, &sep) {
+        match process_line(
+            line,
+            output_writer,
+            &mut latest_reviews.clone(),
+            &mut seen_uuids,
+            &sep,
+        ) {
             Ok(_) => contador_ok += 1,
             Err(_) => contador_error += 1,
         }
@@ -255,7 +261,7 @@ fn process_file(
     header: usize,
     sep: String,
 ) -> io::Result<()> {
-    let data_file_reader = get_bufreader_from_file(&data_path)?;
+    let data_file_reader = get_bufreader_from_file(data_path)?;
     let mut writer = get_bufwriter_from_file(output_path)?;
     let latests_reviews = duplicates::get_uuids_set(data_path);
     let start_time = log_start(&mut program_data)?;
@@ -297,7 +303,6 @@ fn main() {
         Ok(_) => (),
         Err(_) => {
             eprintln!("Error: Couldn't process the file.");
-            return;
         }
     }
 }

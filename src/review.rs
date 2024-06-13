@@ -47,7 +47,7 @@ impl Review {
             content: Self::get_comment(fields[2])?,
             score: Self::get_score(fields[3])?,
             thumbs_up: Self::get_thumbs_up(fields[4])?,
-            date: Self::get_date(&fields[6])?,
+            date: Self::get_date(fields[6])?,
             app_version: Self::get_app_version(fields[5])?,
         })
     }
@@ -61,7 +61,7 @@ impl Review {
     }
 
     fn get_user_name(user_name: &str) -> Result<String, ErrorReview> {
-        if user_name == "" {
+        if user_name.is_empty() {
             Err(ErrorReview::SinNombreDeUsuario)
         } else {
             Ok(user_name.to_string())
@@ -69,7 +69,7 @@ impl Review {
     }
 
     fn get_comment(comment: &str) -> Result<String, ErrorReview> {
-        if comment == "" {
+        if comment.is_empty() {
             Err(ErrorReview::SinComentario)
         } else {
             Ok(comment.to_string())
@@ -112,7 +112,7 @@ impl Review {
 impl Display for Review {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
-            f, 
+            f,
             "id: {}\nuser_name: {}\ncontent: {}\nscore: {}\nthumbs_up: {}\ndate: {}\napp_version: {}", 
             self.id,
             self.user_name,
