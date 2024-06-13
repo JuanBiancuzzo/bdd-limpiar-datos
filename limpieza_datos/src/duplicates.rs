@@ -1,7 +1,7 @@
 use std::{
     collections::HashMap,
     fs::File,
-    io::{BufRead, BufReader},
+    io::{BufRead, BufReader, Write}, // Import the Write trait
 };
 
 use crate::review::Review;
@@ -11,7 +11,6 @@ pub fn get_uuids_set(file_path: &str) -> HashMap<String, NaiveDateTime> {
     let file = File::open(file_path).expect("Error: CouldNaiveDatefile.");
     let reader = BufReader::new(file);
     let mut latest_dates = std::collections::HashMap::new();
-    let mut error_count = 0;
     let mut repeated_count = 0;
 
     for line in reader.lines() {
@@ -30,23 +29,17 @@ pub fn get_uuids_set(file_path: &str) -> HashMap<String, NaiveDateTime> {
                 }
             }
             Err(_) => {
-                error_count += 1;
             }
         }
     }
 
-    if error_count > 0 {
-        eprintln!(
-            "There were {} errors while processing the file.",
-            error_count
-        );
-    }
-
-    println!("There are {} UUIDs in the file.", latest_dates.len());
-
-    if repeated_count > 0 {
-        eprintln!("There are {} repeated UUIDs in the file.", repeated_count);
-    }
+    // if repeated_count > 0 {
+    //     writeln!(
+    //         program_data,
+    //         "Había {} repeated UUIDs in the file.",
+    //         repeated_count
+    //     ).expect("Error: Couldn't write to the file."); 
+    // }
 
     latest_dates
 }
