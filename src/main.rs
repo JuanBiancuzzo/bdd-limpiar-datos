@@ -4,7 +4,7 @@ mod review;
 
 use chrono::{DateTime, Local, NaiveDateTime};
 use serde_json::Value;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::fs::OpenOptions;
 use std::fs::{self, File};
 use std::io::{BufRead, BufReader, BufWriter, Write};
@@ -160,6 +160,60 @@ fn write_header(writer: &mut BufWriter<File>) -> io::Result<()> {
     Ok(())
 }
 
+fn write_review(
+    writer: &mut BufWriter<File>,
+    review: review::Review,
+    seen_uuids: &mut HashSet<String>,
+) -> io::Result<()> {
+    let new_line = format!(
+        "\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\"",
+        review.id,
+        review.user_name,
+        review.content,
+        review.score,
+        review.thumbs_up,
+        review.date,
+        review.app_version
+    );
+
+    seen_uuids.insert(review.id.clone());
+    writeln!(writer, "{}", new_line)?;
+    Ok(())
+}
+
+fn process_line(
+    line: String,
+    output_writer: &mut BufWriter<File>,
+    latest_reviews: &mut HashMap<String, NaiveDateTime>,
+    seen_uuids: &mut HashSet<String>,
+    sep: &str,
+) -> io::Result<()> {
+    let review = match review::Review::new(&line, sep) {
+        Ok(review) => review,
+        Err(_) => {
+            return Err(io::Error::new(
+                io::ErrorKind::Other,
+                "Error: Couldn't process the line.",
+            ))
+        }
+    };
+
+    if let Some(date) = latest_reviews.get(&review.id) {
+        if review.date == *date && !seen_uuids.contains(&review.id) {
+            write_review(output_writer, review, seen_uuids)?;
+        } else {
+            return Ok(());
+        }
+    } else {
+        return Err(io::Error::new(
+            io::ErrorKind::Other,
+            "Error: Couldn't find the UUID in the map.",
+        ));
+    }
+
+    Ok(())
+}
+
 fn process_lines(
     data_file_reader: BufReader<File>,
     output_writer: &mut BufWriter<File>,
@@ -169,9 +223,9 @@ fn process_lines(
 ) -> io::Result<(i32, i32)> {
     let mut contador_ok = 0;
     let mut contador_error = 0;
-    let mut contador_repetidos = 0;
 
     write_header(output_writer)?;
+    let mut seen_uuids = HashSet::new();
 
     for line in data_file_reader.lines().skip(header) {
         let line = match line {
@@ -182,46 +236,10 @@ fn process_lines(
             }
         };
 
-        match review::Review::new(&line, &sep) {
-            Ok(review) => {
-                if let Some(date) = latest_reviews.get(&review.id) {
-                    if review.date != *date {
-                        contador_repetidos += 1;
-                        continue;
-                    }
-                }
-
-                contador_ok += 1;
-                // Format the string with the correct format
-                let new_line = format!(
-                    "\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\",\"{}\"",
-                    review.id,
-                    review.user_name,
-                    review.content,
-                    review.score,
-                    review.thumbs_up,
-                    review.date,
-                    review.app_version
-                );
-
-                match writeln!(output_writer, "{}", new_line) {
-                    Ok(_) => (),
-                    Err(_) => {
-                        contador_error += 1;
-                    }
-                }
-            }
-            Err(_error) => {
-                contador_error += 1;
-            }
+        match process_line(line, output_writer, &mut latest_reviews.clone(), &mut seen_uuids, &sep) {
+            Ok(_) => contador_ok += 1,
+            Err(_) => contador_error += 1,
         }
-    }
-
-    if contador_repetidos > 0 {
-        eprintln!(
-            "There were {} repeated UUIDs in the file.",
-            contador_repetidos
-        );
     }
 
     output_writer

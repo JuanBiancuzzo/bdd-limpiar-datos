@@ -31,7 +31,6 @@ lazy_static! {
         r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
     )
     .expect("Deberia ser un regex valido");
-
     static ref RE_APP_VERSION: Regex =
         Regex::new(r"^\d+\.\d+\.\d+ build \d+ \d+$").expect("Deberia ser un regex valido");
 }

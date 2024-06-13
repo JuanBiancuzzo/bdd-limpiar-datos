@@ -42,8 +42,10 @@ pub fn get_uuids_set(file_path: &str) -> HashMap<String, NaiveDateTime> {
         );
     }
 
+    println!("There are {} UUIDs in the file.", latest_dates.len());
+
     if repeated_count > 0 {
-        eprintln!("There were {} repeated UUIDs in the file.", repeated_count);
+        eprintln!("There are {} repeated UUIDs in the file.", repeated_count);
     }
 
     latest_dates
