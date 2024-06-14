@@ -1,7 +1,8 @@
 # Cómo correr el proyecto
 * El proyecto corre en Linux o, en su defecto, en WSL en Windows.
 * Es necesario tener instalado Rust y Python3. Puede instalarse Rust corriendo el siguiente comando:
-$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+
+`$ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh`
 * Clonar el proyecto
 
 # Sobre el proyecto
