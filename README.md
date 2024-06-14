@@ -22,4 +22,5 @@ $ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 ## Sobre la base de datos
 * El archivo create_reviews_table.sql permite crear la base de datos con las tablas especificadas en el informe. Se puede correr haciendo sqlite3 reviews.db < create_reviews_table.sql. Se puede usar otro nombre que no sea reviews.db también.
 
-  # El informe con el análisis exploratorio de datos, el gráfico de la base de datos, el link al colab y otra información acerca del proyecto se encuentra en la carpeta informe.
+
+# El informe con el análisis exploratorio de datos, el gráfico de la base de datos, el link al colab y otra información acerca del proyecto se encuentra en la carpeta informe.
