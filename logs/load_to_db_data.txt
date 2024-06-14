@@ -1,0 +1,98 @@
+Inicio del proceso: 2024-06-08 01:06:36.110282
+Fin del proceso: 2024-06-08 01:07:36.110282
+Tiempo total: 0:01:14.582927
+Total de filas procesadas: 59389
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-08 01:14:28.381844
+Fin del proceso: 2024-06-08 01:15:32.608552
+Tiempo total: 0:01:04.226708
+Total de filas procesadas: 59389
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-12 23:01:25.193085
+Fin del proceso: 2024-06-12 23:03:16.331108
+Tiempo total: 0:01:51.138023
+Total de filas procesadas: 59336
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 00:05:14.578232
+Fin del proceso: 2024-06-13 00:06:06.357347
+Tiempo total: 0:00:51.779115
+Total de filas procesadas: 59134
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 19:17:36.601879
+Fin del proceso: 2024-06-13 19:19:44.867624
+Tiempo total: 0:02:08.265745
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 12:07:09.097140
+Fin del proceso: 2024-06-13 12:08:24.113533
+Tiempo total: 0:01:15.016393
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 13:50:26.879986
+Fin del proceso: 2024-06-13 13:51:42.406661
+Tiempo total: 0:01:15.526675
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 13:54:56.417963
+Fin del proceso: 2024-06-13 13:56:12.937196
+Tiempo total: 0:01:16.519233
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 19:24:13.541982
+Fin del proceso: 2024-06-13 19:26:16.717035
+Tiempo total: 0:02:03.175053
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 19:28:08.849760
+Fin del proceso: 2024-06-13 19:30:14.140445
+Tiempo total: 0:02:05.290685
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 19:40:06.403823
+Fin del proceso: 2024-06-13 19:42:06.153669
+Tiempo total: 0:01:59.749846
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 20:39:17.283474
+Fin del proceso: 2024-06-13 20:41:31.227855
+Tiempo total: 0:02:13.944381
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 20:42:14.279760
+Fin del proceso: 2024-06-13 20:44:21.284774
+Tiempo total: 0:02:07.005014
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
+Inicio del proceso: 2024-06-13 20:46:41.292913
+Fin del proceso: 2024-06-13 20:48:47.358613
+Tiempo total: 0:02:06.065700
+Total de filas procesadas: 73071
+Filas con errores: 0
+El proceso se completó exitosamente
+--------------------------------------------------------------------------------------
